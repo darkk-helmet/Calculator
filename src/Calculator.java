@@ -1,6 +1,7 @@
 import javax.script.ScriptException;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
+import java.awt.*;
 
 public class Calculator {
     private JTextArea calculation;
@@ -24,6 +25,7 @@ public class Calculator {
     private JButton decimal;
     private JButton enter;
     private JPanel calcPanel;
+    private JScrollPane calcScroll;
     private static Calculator instance;
     private boolean canUseDecimal = true;
     private boolean canUseOperator = false;
@@ -133,6 +135,8 @@ public class Calculator {
             calculation.setText("");
             answer.setText("");
             charCount = 0;
+            canUseOperator = false;
+            canUseDecimal = true;
         });
         enter.addActionListener(e -> {
             if(charCount > 0) {
@@ -145,6 +149,13 @@ public class Calculator {
                 answer.setText(String.valueOf(solution));
             }
         });
+
+        calculation.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 18));
+        answer.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 18));
+
+        int scrollbarSize = 15;
+        UIManager.put("ScrollBar.width", scrollbarSize);
+        calcScroll.setHorizontalScrollBar(calcScroll.createHorizontalScrollBar());
     }
 
     public static Calculator getInstance() {
@@ -184,7 +195,7 @@ public class Calculator {
             else if (removedChar == '+' || removedChar == '-' || removedChar == '*' || removedChar == '/') {
                 canUseOperator = true;
                 int index = charCount - 1;
-                while (index > 0) {
+                while (index >= 0) {
                     lastChar = calculation.getText(index, 1).charAt(0);
                     if(lastChar == '.') {
                         canUseDecimal = false;
@@ -197,7 +208,7 @@ public class Calculator {
                 canUseDecimal = true;
             }
             else {
-                if (lastChar == '+' || lastChar == '-' || lastChar == '*' || lastChar == '/')
+                if (lastChar == '+' || lastChar == '-' || lastChar == '*' || lastChar == '/' || lastChar == '.')
                     canUseOperator = false;
             }
         }
