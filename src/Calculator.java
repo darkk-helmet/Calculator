@@ -131,6 +131,7 @@ public class Calculator {
         });
         clear.addActionListener(e -> {
             calculation.setText("");
+            answer.setText("");
             charCount = 0;
         });
         enter.addActionListener(e -> {
